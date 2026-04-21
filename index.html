@@ -28,12 +28,12 @@
             min-height: 100vh;
         }
 
-        /* 卡片容器 */
+        /* 卡片容器 (響應式最大寬度調整) */
         .container {
             background-color: var(--card-bg);
             width: 100%;
-            max-width: 400px;
-            padding: 30px 20px;
+            max-width: 800px; /* 放寬最大限制以容納左右排列 */
+            padding: 30px;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             box-sizing: border-box;
@@ -46,12 +46,28 @@
             color: var(--text-color);
         }
 
+        /* 響應式網格佈局 (RWD 核心) */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr; /* 預設為手機版：單欄上下排列 */
+            gap: 20px;
+        }
+
+        /* 當螢幕寬度大於 768px (平板/電腦) 時，切換為雙欄左右排列 */
+        @media (min-width: 768px) {
+            .grid-layout {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         /* 區塊樣式 */
         .section {
             background-color: var(--bg-color);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .section-title {
@@ -60,9 +76,29 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 18px;
+        }
+
+        /* 輔助連結 */
+        .help-link {
+            display: block;
+            text-align: right;
+            font-size: 13px;
+            color: var(--secondary-text);
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
+        .help-link a {
+            color: var(--primary-color);
+            text-decoration: none;
         }
 
         /* 輸入框與按鈕 */
+        .input-group {
+            margin-top: auto; /* 讓輸入框和按鈕對齊底部 */
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -72,6 +108,7 @@
             font-size: 16px;
             box-sizing: border-box;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         input[type="text"]:focus {
@@ -88,27 +125,15 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         button:hover {
             background-color: #005bb5;
         }
 
-        /* 輔助連結 */
-        .help-link {
-            display: block;
-            text-align: right;
-            font-size: 13px;
-            color: var(--secondary-text);
-            text-decoration: none;
-            margin-top: -4px;
-            margin-bottom: 10px;
-        }
-
-        .help-link a {
-            color: var(--primary-color);
-            text-decoration: none;
+        button:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -117,22 +142,34 @@
     <div class="container">
         <h2>教會與牧者查詢系統</h2>
 
-        <div class="section">
-            <div class="section-title">👤 牧者異動查詢</div>
-            <div class="help-link">
-                不知道代號？<a href="https://www.pct.org.tw/pastor.aspx" target="_blank">前往尋找牧者編號</a>
+        <div class="grid-layout">
+            
+            <div class="section">
+                <div>
+                    <div class="section-title">👤 牧者異動查詢</div>
+                    <div class="help-link">
+                        不知道代號？<a href="https://www.pct.org.tw/pastor.aspx" target="_blank">前往尋找牧者編號</a>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="pastor-id" placeholder="請輸入牧者代號 (如數字)">
+                    <button onclick="searchPastor()">查詢牧者</button>
+                </div>
             </div>
-            <input type="text" id="pastor-id" placeholder="請輸入牧者代號 (如數字)">
-            <button onclick="searchPastor()">查詢牧者</button>
-        </div>
 
-        <div class="section">
-            <div class="section-title">⛪ 教會歷任查詢</div>
-            <div class="help-link">
-                不知道代號？<a href="https://www.pct.org.tw/church.aspx" target="_blank">前往尋找教會編號</a>
+            <div class="section">
+                <div>
+                    <div class="section-title">⛪ 教會歷任查詢</div>
+                    <div class="help-link">
+                        不知道代號？<a href="https://www.pct.org.tw/church.aspx" target="_blank">前往尋找教會編號</a>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="church-id" placeholder="請輸入教會代號 (如文字)">
+                    <button onclick="searchChurch()">查詢教會</button>
+                </div>
             </div>
-            <input type="text" id="church-id" placeholder="請輸入教會代號 (如文字)">
-            <button onclick="searchChurch()">查詢教會</button>
+
         </div>
     </div>
 
